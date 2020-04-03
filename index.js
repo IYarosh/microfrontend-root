@@ -1,1 +1,1 @@
-let user = "Ilia";
+import * as singleSpa from 'single-spa';
