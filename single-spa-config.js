@@ -1,32 +1,38 @@
 import * as singleSpa from 'single-spa';
 const app1name = 'app1';
 const app2name = 'app2';
+
 /* The app can be a resolved application or a function that returns a promise that resolves with the javascript application module.
  * The purpose of it is to facilitate lazy loading -- single-spa will not download the code for a application until it needs to.
  * In this example, import() is supported in webpack and returns a Promise, but single-spa works with any loading function that returns a Promise.
  */
-const app1 = () => import('./app1.js');
-const app2 = () => import('./app2.js');
-/* single-spa does some top-level routing to determine which application is active for any url. You can implement this routing any way you'd like.
- * One useful convention might be to prefix the url with the name of the app that is active, to keep your top-level routing simple.
- */
+const app1Loader = () => import('microfrontend-app1');
+const app2Loader = () => import('microfrontend-app2');
 
+let activeTab = 1;
 
-let isApp1Active = true
+const showApp1Handler = (location) => {
+    console.log('showApp1Handler. Location:', location);
+    return activeTab === 1;
+};
 
-function toggle() {
-    console.log('toggle');
-    isApp1Active = !isApp1Active;
-    singleSpa.start();
-    setTimeout(() => {
-        toggle()
-    }, 3000);
-}
+const showApp2Handler = (location) => {
+    console.log('showApp2Handler. Location:', location);
+    return activeTab === 2;
+};
 
-const app1activeWhen = (location) => isApp1Active;
-const app2activeWhen = (location) => !isApp1Active;
-singleSpa.registerApplication( 'app1', app1, app1activeWhen);
-singleSpa.registerApplication( 'app2', app2, app2activeWhen);
+singleSpa.registerApplication(app1name, app1Loader, showApp1Handler);
+singleSpa.registerApplication(app2name, app2Loader, showApp2Handler);
+
 singleSpa.start();
 
-toggle();
+
+// Add listeners to toggle microfrontends 
+document.getElementById('tab-app1').addEventListener('click', () => {
+    activeTab = 1;
+    singleSpa.triggerAppChange();
+})
+document.getElementById('tab-app2').addEventListener('click', () => {
+    activeTab = 2;
+    singleSpa.triggerAppChange();
+})

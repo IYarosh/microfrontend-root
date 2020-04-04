@@ -11,7 +11,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({template: path.resolve(__dirname, 'index.html')})
   ],
-  resolve: {
-    modules: ['node_modules']
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
   }
 };

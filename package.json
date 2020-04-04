@@ -4,7 +4,7 @@
   "description": "Attempt to create microfrontend with single-spa",
   "main": "./src/index.js",
   "scripts": {
-    "start:dev": "webpack-dev-server",
+    "start": "webpack && webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "IYarosh@qulix.com",
@@ -16,7 +16,8 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "single-spa": "^5.3.1",
-    "zone.js": "0.10.2"
+    "microfrontend-app1": "github:IYarosh/microfrontend-app1",
+    "microfrontend-app2": "github:IYarosh/microfrontend-app2",
+    "single-spa": "^5.3.1"
   }
 }
